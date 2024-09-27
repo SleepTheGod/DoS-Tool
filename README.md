@@ -1,4 +1,5 @@
 # Amp NTP DoS Tool using Flask and Scapy
+![Example Image]([https://example.com/image.jpg](https://i.imgur.com/aRscZDk.png))
 
 This project demonstrates an NTP amplification attack using Flask for the interface and Scapy for sending crafted NTP packets. This script allows you to simulate the attack by sending NTP requests to a target using randomly selected NTP servers from a provided list.
 
