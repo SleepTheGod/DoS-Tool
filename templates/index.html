@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clumsy Attack Client</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: #0d0d0d; /* Dark background */
+            color: #ffffff; /* White text */
+            font-family: 'Courier New', Courier, monospace; /* Monospace font for a hacker vibe */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #1a1a1a; /* Slightly lighter background for the form */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); /* Glowing shadow effect */
+            width: 300px;
+            text-align: left;
+        }
+
+        /* Input Styles */
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #333; /* Dark input background */
+            color: #fff; /* White text for inputs */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            background-color: #444; /* Darker background on focus */
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #c70000; /* Red background */
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e70000; /* Lighter red on hover */
+        }
+
+        /* Pulsing Animation */
+        button:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(199, 0, 0, 0.5); /* Glowing red background */
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: pulse 1.5s infinite; /* Pulse animation */
+            z-index: 0; /* Place behind button text */
+        }
+
+        button span {
+            position: relative; /* Ensure the text is above the pulsing effect */
+            z-index: 1; 
+        }
+
+        /* Pulse Keyframes */
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Result Message Styles */
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Denial of Service Attack Tool</h1>
+    <form id="attackForm">
+        <label for="target">Target (IP/Domain):</label>
+        <input type="text" id="target" name="target" required><br>
+        <label for="port">Port:</label>
+        <input type="number" id="port" name="port" value="80"><br>
+        <label for="timeout">Timeout:</label>
+        <input type="number" id="timeout" name="timeout" value="5"><br>
+        <label for="threads">Threads:</label>
+        <input type="number" id="threads" name="threads" value="100"><br>
+        <label for="sleep">Sleep:</label>
+        <input type="number" id="sleep" name="sleep" value="2"><br>
+        <button type="submit">Start Attack</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('attackForm').onsubmit = function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            fetch('/attack', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').innerHTML = `<p style="color: red;">${data.error}</p>`;
+                } else {
+                    document.getElementById('result').innerHTML = `<p>${data.message}</p>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
