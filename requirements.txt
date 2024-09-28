@@ -1,2 +1,3 @@
-Flask
-scapy
+Flask==2.2.3
+Werkzeug==2.2.3
+scapy==2.4.5
