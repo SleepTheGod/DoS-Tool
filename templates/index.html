@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,6 +101,14 @@
         /* Result Message Styles */
         #result {
             margin-top: 20px;
+            text-align: center; /* Center result text */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 400px) {
+            form {
+                width: 90%; /* Make form responsive */
+            }
         }
     </style>
 </head>
@@ -109,15 +116,11 @@
     <h1>Denial of Service Attack Tool</h1>
     <form id="attackForm">
         <label for="target">Target (IP/Domain):</label>
-        <input type="text" id="target" name="target" required><br>
-        <label for="port">Port:</label>
-        <input type="number" id="port" name="port" value="80"><br>
-        <label for="timeout">Timeout:</label>
-        <input type="number" id="timeout" name="timeout" value="5"><br>
+        <input type="text" id="target" name="target" required>
+        
         <label for="threads">Threads:</label>
-        <input type="number" id="threads" name="threads" value="100"><br>
-        <label for="sleep">Sleep:</label>
-        <input type="number" id="sleep" name="sleep" value="2"><br>
+        <input type="number" id="threads" name="threads" value="100" min="1" required>
+        
         <button type="submit">Start Attack</button>
     </form>
 
@@ -132,16 +135,22 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                const resultDiv = document.getElementById('result');
                 if (data.error) {
-                    document.getElementById('result').innerHTML = `<p style="color: red;">${data.error}</p>`;
+                    resultDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
                 } else {
-                    document.getElementById('result').innerHTML = `<p>${data.message}</p>`;
+                    resultDiv.innerHTML = `<p>${data.message}</p>`;
                 }
             })
             .catch(error => {
-                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error}</p>`;
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
             });
         }
     </script>
